@@ -1,49 +1,61 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { useState, useEffect } from 'react';
+import { ActivityIndicator, Card, Divider } from 'react-native-paper';
+import Header from './components/Header';
+import Values from './components/Values';
+import Value from './components/Value';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+const App = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [uvaUsd, setUvaUsd] = useState([]);
+  const [uva, setUva] = useState([]);
+  const [usd, setUsd] = useState([]);
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+  const doRefresh = () => {
+    setLoading(true);
+    setError(null);
+    fetch('https://arielsanguinetti.com.ar/dolar-uvita/data')
+      .then(res => res.json())
+      .then(json => {
+        setLoading(false);
+        console.log(json);
+        setUvaUsd(json.uvaUsd.reverse());
+        setUva(json.uva.reverse());
+        setUsd(json.usd.reverse());
+      })
+      .catch(({ message }) => {
+        setLoading(false);
+        setError(message);
+      });
+  };
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
-}
+  useEffect(() => {
+    doRefresh();
+  }, []);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+  return (
+    <>
+      <Header
+        title="Dolar Uvita"
+        subtitle="@DolarUvita"
+        doRefresh={doRefresh}
+      />
+      {loading && <ActivityIndicator size="large" />}
+      {error && (
+        <Card>
+          <Card.Title
+            title="Error"
+            subtitle="Por favor intente nuevamente..."
+          />
+        </Card>
+      )}
+      {uvaUsd.length > 0 && <Values title="USD en UVA" values={uvaUsd} />}
+      <Divider />
+      {usd.length > 0 && <Values title="USD" values={usd} />}
+      <Divider />
+      {uva.length > 0 && <Value title="UVA" values={uva} />}
+    </>
+  );
+};
+
+export default App;

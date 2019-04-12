@@ -11,8 +11,13 @@
     "ios": "react-native run-ios"
   },
   "dependencies": {
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
+    "prop-types": "^15.7.2",
     "react": "16.8.3",
-    "react-native": "0.59.4"
+    "react-native": "0.59.4",
+    "react-native-paper": "^2.15.2",
+    "react-native-vector-icons": "^6.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
