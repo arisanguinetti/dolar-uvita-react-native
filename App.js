@@ -7,7 +7,7 @@ import Value from './components/Value';
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [uvaUsd, setUvaUsd] = useState([]);
+  const [usdUva, setUsdUva] = useState([]);
   const [uva, setUva] = useState([]);
   const [usd, setUsd] = useState([]);
 
@@ -18,10 +18,9 @@ const App = () => {
       .then(res => res.json())
       .then(json => {
         setLoading(false);
-        console.log(json);
-        setUvaUsd(json.uvaUsd.reverse());
-        setUva(json.uva.reverse());
-        setUsd(json.usd.reverse());
+        setUsdUva(json.usdUva);
+        setUva(json.uva);
+        setUsd(json.usd);
       })
       .catch(({ message }) => {
         setLoading(false);
@@ -49,7 +48,7 @@ const App = () => {
           />
         </Card>
       )}
-      {uvaUsd.length > 0 && <Values title="USD en UVA" values={uvaUsd} />}
+      {usdUva.length > 0 && <Values title="USD en UVA" values={usdUva} />}
       <Divider />
       {usd.length > 0 && <Values title="USD" values={usd} />}
       <Divider />

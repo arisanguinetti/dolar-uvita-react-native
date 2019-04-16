@@ -12,25 +12,25 @@ const Values = ({ title, values }) => {
       .tz('America/Argentina/Buenos_Aires')
       .format('LLL');
 
-  const { vendedor, comprador } = dato.value;
+  const { date, vendedor, comprador } = dato;
 
   return (
     <Card>
-      <Card.Title title={title} subtitle={showDate(dato.date)} />
+      <Card.Title title={title} subtitle={showDate(date)} />
       <Card.Content>
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={{ textAlign: 'center' }}>
-              Vendedor
+              Comprador
             </DataTable.Title>
             <DataTable.Title style={{ textAlign: 'center' }}>
-              Comprador
+              Vendedor
             </DataTable.Title>
           </DataTable.Header>
           {dato && (
-            <DataTable.Row key={dato.date}>
-              <DataTable.Cell>{vendedor.toFixed(2)}</DataTable.Cell>
+            <DataTable.Row key={date}>
               <DataTable.Cell>{comprador.toFixed(2)}</DataTable.Cell>
+              <DataTable.Cell>{vendedor.toFixed(2)}</DataTable.Cell>
             </DataTable.Row>
           )}
         </DataTable>

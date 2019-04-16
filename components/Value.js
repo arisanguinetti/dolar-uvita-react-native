@@ -5,16 +5,18 @@ import 'moment/locale/es';
 import { DataTable, Card } from 'react-native-paper';
 
 const Value = ({ title, values }) => {
-  const value = values.pop();
+  const data = values.pop();
 
   const showDate = timestamp =>
     moment(timestamp)
       .tz('America/Argentina/Buenos_Aires')
       .format('LLL');
 
+  const { date, value } = data;
+
   return (
     <Card>
-      <Card.Title title={title} subtitle={showDate(value.date)} />
+      <Card.Title title={title} subtitle={showDate(date)} />
       <Card.Content>
         <DataTable>
           <DataTable.Header>
@@ -23,8 +25,8 @@ const Value = ({ title, values }) => {
             </DataTable.Title>
           </DataTable.Header>
           {value && (
-            <DataTable.Row key={value.date}>
-              <DataTable.Cell>{value.value.toFixed(2)}</DataTable.Cell>
+            <DataTable.Row key={date}>
+              <DataTable.Cell>{value.toFixed(2)}</DataTable.Cell>
             </DataTable.Row>
           )}
         </DataTable>
