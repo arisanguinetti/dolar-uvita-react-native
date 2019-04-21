@@ -7,20 +7,20 @@ import Value from './components/Value';
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [usdUva, setUsdUva] = useState([]);
-  const [uva, setUva] = useState([]);
-  const [usd, setUsd] = useState([]);
+  const [usdUva, setUsdUva] = useState(null);
+  const [uva, setUva] = useState(null);
+  const [usd, setUsd] = useState(null);
 
-  const doRefresh = () => {
+  const doRefresh = async () => {
     setLoading(true);
     setError(null);
-    fetch('https://arielsanguinetti.com.ar/dolar-uvita/data')
+    fetch('https://arielsanguinetti.com.ar/dolar-uvita/latest')
       .then(res => res.json())
       .then(json => {
-        setLoading(false);
         setUsdUva(json.usdUva);
         setUva(json.uva);
         setUsd(json.usd);
+        setLoading(false);
       })
       .catch(({ message }) => {
         setLoading(false);
@@ -29,7 +29,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    doRefresh();
+    (async () => {
+      await doRefresh();
+    })();
   }, []);
 
   return (
@@ -48,11 +50,15 @@ const App = () => {
           />
         </Card>
       )}
-      {usdUva.length > 0 && <Values title="USD en UVA" values={usdUva} />}
-      <Divider />
-      {usd.length > 0 && <Values title="USD" values={usd} />}
-      <Divider />
-      {uva.length > 0 && <Value title="UVA" values={uva} />}
+      {!loading && (
+        <>
+          <Values title="USD en UVA" data={usdUva} />
+          <Divider />
+          <Values title="USD" data={usd} />
+          <Divider />
+          <Value title="UVA" data={uva} />
+        </>
+      )}
     </>
   );
 };

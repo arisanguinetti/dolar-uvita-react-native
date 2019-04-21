@@ -4,15 +4,13 @@ import PropTypes from 'prop-types';
 import 'moment/locale/es';
 import { DataTable, Card } from 'react-native-paper';
 
-const Values = ({ title, values }) => {
-  const dato = values.pop();
-
+const Values = ({ title, data }) => {
   const showDate = timestamp =>
     moment(timestamp)
       .tz('America/Argentina/Buenos_Aires')
       .format('LLL');
 
-  const { date, vendedor, comprador } = dato;
+  const { date, vendedor, comprador } = data;
 
   return (
     <Card>
@@ -27,7 +25,7 @@ const Values = ({ title, values }) => {
               Vendedor
             </DataTable.Title>
           </DataTable.Header>
-          {dato && (
+          {data && (
             <DataTable.Row key={date}>
               <DataTable.Cell>{comprador.toFixed(2)}</DataTable.Cell>
               <DataTable.Cell>{vendedor.toFixed(2)}</DataTable.Cell>
@@ -41,7 +39,7 @@ const Values = ({ title, values }) => {
 
 Values.propTypes = {
   title: PropTypes.string,
-  values: PropTypes.array,
+  data: PropTypes.object,
 };
 
 export default Values;

@@ -1,12 +1,10 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
-import 'moment/locale/es';
 import { DataTable, Card } from 'react-native-paper';
+import 'moment/locale/es';
 
-const Value = ({ title, values }) => {
-  const data = values.pop();
-
+const Value = ({ title, data }) => {
   const showDate = timestamp =>
     moment(timestamp)
       .tz('America/Argentina/Buenos_Aires')
@@ -37,7 +35,7 @@ const Value = ({ title, values }) => {
 
 Value.propTypes = {
   title: PropTypes.string,
-  values: PropTypes.array,
+  data: PropTypes.object,
 };
 
 export default Value;
